@@ -46,6 +46,17 @@ class FlutterEasemobKefu {
     );
   }
 
+  /// 登录
+  static Future<bool> loginWithToken(String username, String token) async {
+    return await _channel.invokeMethod(
+      "loginWithToken",
+      <String, dynamic>{
+        "username": username,
+        "token": token,
+      },
+    );
+  }
+
   /// 是否登录
   static Future<bool> get isLogin async {
     return await _channel.invokeMethod("isLogin");

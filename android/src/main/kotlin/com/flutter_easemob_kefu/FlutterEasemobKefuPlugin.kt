@@ -50,6 +50,11 @@ public class FlutterEasemobKefuPlugin : FlutterPlugin, MethodCallHandler {
                 call.argument<String>("password")!!,
                 result
             )
+            "loginWithToken" -> loginWithToken(
+                call.argument<String>("username")!!,
+                call.argument<String>("token")!!,
+                result
+            )
             "isLogin" -> result.success(ChatClient.getInstance().isLoggedInBefore)
             "logout" -> logout(result)
             "jumpToPage" -> jumpToPage(
@@ -100,6 +105,27 @@ public class FlutterEasemobKefuPlugin : FlutterPlugin, MethodCallHandler {
         @NonNull result: Result
     ) {
         ChatClient.getInstance().login(username, password, object : Callback {
+            override fun onSuccess() {
+                backDataToFlutter(result, true)
+            }
+
+            override fun onError(code: Int, error: String?) {
+                println("$TAG login username:$username code:$code, error: $error")
+                backDataToFlutter(result, code == Error.USER_ALREADY_LOGIN)
+            }
+
+            override fun onProgress(progress: Int, status: String?) {
+            }
+
+        })
+    }
+
+    private fun loginWithToken(
+        @NonNull username: String,
+        @NonNull token: String,
+        @NonNull result: Result
+    ) {
+        ChatClient.getInstance().loginWithToken(username, token, object : Callback {
             override fun onSuccess() {
                 backDataToFlutter(result, true)
             }
