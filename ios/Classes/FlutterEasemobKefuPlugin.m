@@ -18,6 +18,8 @@
       [self registerUser:call result:result];
   } else if ([@"login" isEqualToString:call.method]) {
       [self loginUser:call result:result];
+  } else if ([@"loginWithToken" isEqualToString:call.method]) {
+      [self loginWithToken:call result:result];
   } else if ([@"isLogin" isEqualToString:call.method]) {
       [self checkLogin:result];
   } else if ([@"logout" isEqualToString:call.method]) {
@@ -59,6 +61,18 @@
     NSDictionary *arguments = call.arguments;
     HDClient *client = [HDClient sharedClient];
     HDError *error = [client loginWithUsername:arguments[@"username"] password:arguments[@"password"]];
+    if(error.code == HDErrorUserAlreadyLogin || !error){
+        result([NSNumber numberWithBool:YES]);
+    }else{
+        result([NSNumber numberWithBool:NO]);
+    }
+
+}
+
+- (void)loginWithToken:(FlutterMethodCall *)call result:(FlutterResult)result {
+    NSDictionary *arguments = call.arguments;
+    HDClient *client = [HDClient sharedClient];
+    HDError *error = [client loginWithUsername:arguments[@"username"] token:arguments[@"token"]];
     if(error.code == HDErrorUserAlreadyLogin || !error){
         result([NSNumber numberWithBool:YES]);
     }else{
