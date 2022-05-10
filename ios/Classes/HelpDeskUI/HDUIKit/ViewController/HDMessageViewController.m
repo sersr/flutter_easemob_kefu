@@ -129,7 +129,6 @@ typedef enum : NSUInteger {
 
     [self setLeftBarBtnItem];
     
-    [self preferredStatusBarStyle:FALSE];
     self.navigationController.navigationBar.backgroundColor = UIColorFromRGB(0xFF00acff);
     self.navigationController.navigationBar.barTintColor = UIColorFromRGB(0xFF00acff);
 
@@ -170,14 +169,18 @@ typedef enum : NSUInteger {
     return UIStatusBarStyleLightContent;
 }
 
+//隐藏Home指示条
+-(BOOL)prefersHomeIndicatorAutoHidden{
+    return YES;
+}
 
 - (void)setupCell {
-    
+
     [[HDBaseMessageCell appearance] setSendBubbleBackgroundImage:[ImageBundle(@"chat_sender_bg", @"png") stretchableImageWithLeftCapWidth:5 topCapHeight:35]];
     [[HDBaseMessageCell appearance] setRecvBubbleBackgroundImage:[ImageBundle(@"chat_receiver_bg", @"png") stretchableImageWithLeftCapWidth:35 topCapHeight:35]];
     [[HDBaseMessageCell appearance] setSendMessageVoiceAnimationImages:@[ImageBundle(@"chat_sender_audio_playing_full", @"png"), ImageBundle(@"chat_sender_audio_playing_000", @"png"), ImageBundle(@"chat_sender_audio_playing_001", @"png"), ImageBundle(@"chat_sender_audio_playing_002", @"png"), ImageBundle(@"chat_sender_audio_playing_003", @"png")]];
     [[HDBaseMessageCell appearance] setRecvMessageVoiceAnimationImages:@[ImageBundle(@"chat_receiver_audio_playing_full", @"png"),ImageBundle(@"chat_receiver_audio_playing000", @"png"), ImageBundle(@"chat_receiver_audio_playing001", @"png"), ImageBundle(@"chat_receiver_audio_playing002", @"png"), ImageBundle(@"chat_receiver_audio_playing003", @"png")]];
-    
+
     [[HDBaseMessageCell appearance] setAvatarSize:40.f];
     [[HDBaseMessageCell appearance] setAvatarCornerRadius:20.f];
     [[HDChatBarMoreView appearance] setMoreViewBackgroundColor:[UIColor colorWithRed:240 / 255.0 green:242 / 255.0 blue:247 / 255.0 alpha:1.0]];
@@ -199,7 +202,7 @@ typedef enum : NSUInteger {
     backButton.titleRect = CGRectMake(10, 0, 60, 29);
     [self.view addSubview:backButton];
     backButton.frame = CGRectMake(0, 0, 60, 29);
-    
+
     [backButton addTarget:self action:@selector(backItemClicked) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     UIBarButtonItem *nagetiveSpacer = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -218,7 +221,7 @@ typedef enum : NSUInteger {
 }
 
 - (void)backItemDidClicked {
-    
+
 }
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
@@ -227,11 +230,11 @@ typedef enum : NSUInteger {
             return NO;
         }
     }
-    
+
     if ([touch.view isKindOfClass:HDRecordView.class]) {
         return NO;
     }
-    
+
     if(touch.view.tag == 1991){
         return NO; //tag in Cell+Form.h
     }
@@ -253,7 +256,7 @@ typedef enum : NSUInteger {
 //        }
 //        HDEmotion *emotion = [emotions objectAtIndex:0];
 //        HDEmotionManager *manager= [[HDEmotionManager alloc] initWithType:HDEmotionDefault emotionRow:3 emotionCol:7 emotions:emotions tagImage:[UIImage imageNamed:emotion.emotionId]];
-    
+
         // 添加自定义表情
 #pragma mark smallpngface
         NSMutableArray *customEmotions = [NSMutableArray array];
@@ -262,7 +265,7 @@ typedef enum : NSUInteger {
         NSBundle *mainbundle = [NSBundle bundleForClass:[self class]];
         NSString *myBundlePath = [mainbundle pathForResource:@"HelpDeskUIResource" ofType:@"bundle"];\
         NSBundle *myBundle = [NSBundle bundleWithPath:myBundlePath];
-    
+
         for (int i=1; i<=35; i++) {
             customName = [@"e_e_" stringByAppendingString:[NSString stringWithFormat:@"%d",i]];
             NSString *imagePath = [myBundle pathForResource:customName ofType:@"png"];
@@ -297,7 +300,7 @@ typedef enum : NSUInteger {
 {
     [[HDCDDeviceManager sharedInstance] stopPlaying];
     [HDCDDeviceManager sharedInstance].delegate = nil;
-    
+
     if (_imagePicker){
         [_imagePicker dismissViewControllerAnimated:NO completion:nil];
         _imagePicker = nil;
@@ -308,11 +311,12 @@ typedef enum : NSUInteger {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+//    [self preferredStatusBarStyle:FALSE];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self preferredStatusBarStyle:YES];
+//    [self preferredStatusBarStyle:YES];
     [super viewWillDisappear:animated];
 }
 
