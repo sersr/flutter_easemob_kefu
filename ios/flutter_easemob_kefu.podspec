@@ -16,8 +16,8 @@ A new Flutter plugin.
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'HelpDesk', '= 1.0.1'
-  s.dependency 'Hyphenate', '= 3.7.1'
+  s.dependency 'HelpDesk', '~> 1.0.1'
+  s.dependency 'Hyphenate', '= 3.7.4'
   s.ios.resource = 'Frameworks/resource/HelpDeskUIResource.bundle'
   s.static_framework = true
   
